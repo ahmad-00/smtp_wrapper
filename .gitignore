@@ -1,0 +1,8 @@
+*.pyc
+*.py[co]
+*.DS_*
+*.egg
+*.egg-info
+dist
+venv/
+.idea/
