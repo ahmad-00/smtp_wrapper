@@ -1,6 +1,5 @@
+import os
 import re
-
-from django.template.loader import render_to_string
 
 from config import Config
 from smtp_client import SMTPClient
@@ -33,20 +32,17 @@ class BaseEmail:
 
 
 class BaseHTMLEmail(BaseEmail):
+    html_dir_base_path = ''
     html_template_name: str = 'base_template.html'
     recipient_name: str
     message: str
     url: str
 
     def __init__(self):
-        """
-        Modify context parameters based on your HTML template
-        """
-
-        self.html_body = render_to_string(
-            self.html_template_name, context={
-                'subject': self.subject,
-                'message': self.message
-            }
-        )
+        # Loading HTML File
+        template_path = os.path.join(self.html_dir_base_path, self.html_template_name)
+        file = open(template_path, "r", encoding='utf-8')
+        template = file.read()
+        file.close()
+        self.template = template
         super(BaseHTMLEmail, self).__init__()
