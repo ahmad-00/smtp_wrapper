@@ -1,8 +1,9 @@
-from usage_example import mail_example
 from celery import shared_task
 
+from usage_example import email_template
 
-@shared_task(bind=True, max_retries=4)
-def send_email(self, email_method, **kwargs):
-    email_obj = getattr(mail_example, email_method)(**kwargs)
+
+@shared_task(bind=True)
+def send_email(self, email_type, **kwargs):
+    email_obj = getattr(email_template, email_type)(**kwargs)
     email_obj.send()
